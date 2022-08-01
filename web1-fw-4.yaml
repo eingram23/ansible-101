@@ -1,0 +1,35 @@
+---
+- name: Sample playbook
+  hosts: test2.local.lan
+  remote_user: ansible
+  become: true
+  become_method: sudo
+  gather_facts: false
+
+  tasks:
+
+    - name: Install firewalld if needed
+      ansible.builtin.package:
+        name: firewalld
+        state: present
+
+    - name: Enable firewalld service and start up
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Create firewall rules
+      ansible.posix.firewalld:
+        port: "8080/tcp"
+        zone: public
+        permanent: true
+        state: enabled
+      notify:
+        Reload firewall
+
+  handlers:
+    - name: Reload firewall
+      ansible.builtin.systemd:
+        name: firewalld
+        state: reloaded

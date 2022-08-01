@@ -1,0 +1,21 @@
+---
+- name: Sample playbook
+  hosts: test1.local.lan
+  remote_user: ansible
+  become: true
+  become_method: sudo
+  gather_facts: false
+
+  tasks:
+
+    - name: Create firewall rules
+      ansible.posix.firewalld:
+        port: "8080/tcp"
+        zone: public
+        permanent: true
+        state: enabled
+
+    - name: Reload firewall
+      ansible.builtin.systemd:
+        name: firewalld
+        state: reloaded
