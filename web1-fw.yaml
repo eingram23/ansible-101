@@ -24,7 +24,7 @@
         port: "8080/tcp"
         zone: public
         permanent: true
-        state: enabled  
+        state: enabled
       notify:
         Reload firewall
 

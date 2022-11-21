@@ -1,0 +1,26 @@
+---
+- name: Test playbook
+  hosts: test1.local.lan
+  become: false
+  gather_facts: false
+
+  tasks: 
+
+    - name: Create blank testfile on remote host
+      ansible.builtin.file:
+        path: ~/testfile
+        state: touch
+        owner: ansible
+        group: ansible
+        mode: '0644'
+
+    - name: Add line to testfile
+      ansible.builtin.lineinfile:
+        path: ~/testfile
+        line: Add this line
+
+    - name: Delete testfile
+      ansible.builtin.file:
+        path: ~/testfile
+        state: absent
+
